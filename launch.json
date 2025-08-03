@@ -1,0 +1,90 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "HarvestNet: Flask Backend",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/harvestnet-backend/app.py",
+      "console": "integratedTerminal",
+      "env": {
+        "FLASK_ENV": "development",
+        "FLASK_DEBUG": "1",
+        "PYTHONPATH": "${workspaceFolder}/harvestnet-backend"
+      },
+      "cwd": "${workspaceFolder}/harvestnet-backend",
+      "args": [],
+      "jinja": true,
+      "justMyCode": false,
+      "stopOnEntry": false,
+      "showReturnValue": true
+    },
+    {
+      "name": "HarvestNet: Run Tests",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/harvestnet-backend/test_suite.py",
+      "console": "integratedTerminal",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/harvestnet-backend"
+      },
+      "cwd": "${workspaceFolder}/harvestnet-backend",
+      "args": [],
+      "justMyCode": false,
+      "stopOnEntry": false
+    },
+    {
+      "name": "HarvestNet: Data Validation",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/harvestnet-backend/data_validation.py",
+      "console": "integratedTerminal",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/harvestnet-backend"
+      },
+      "cwd": "${workspaceFolder}/harvestnet-backend",
+      "args": [],
+      "justMyCode": false,
+      "stopOnEntry": false
+    },
+    {
+      "name": "HarvestNet: Debug API Endpoint",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/harvestnet-backend/app.py",
+      "console": "integratedTerminal",
+      "env": {
+        "FLASK_ENV": "development",
+        "FLASK_DEBUG": "1",
+        "PYTHONPATH": "${workspaceFolder}/harvestnet-backend"
+      },
+      "cwd": "${workspaceFolder}/harvestnet-backend",
+      "args": [],
+      "jinja": true,
+      "justMyCode": false,
+      "stopOnEntry": true,
+      "showReturnValue": true,
+      "breakpoints": [
+        {
+          "path": "${workspaceFolder}/harvestnet-backend/app.py",
+          "line": 50
+        }
+      ]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "HarvestNet: Full Stack Debug",
+      "configurations": [
+        "HarvestNet: Flask Backend"
+      ],
+      "stopAll": true,
+      "presentation": {
+        "hidden": false,
+        "group": "HarvestNet",
+        "order": 1
+      }
+    }
+  ]
+}
+

@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>HarvestNet - Agricultural Platform for Kenyan Farmers</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #e8f5e8 0%, #f0f9ff 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        /* Mobile-first responsive design */
+        @media (min-width: 768px) {
+            .container {
+                flex-direction: row;
+            }
+        }
+
+        .left-section {
+            flex: 1;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            order: 2;
+        }
+
+        @media (min-width: 768px) {
+            .left-section {
+                padding: 2rem;
+                order: 1;
+            }
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            justify-content: center;
+        }
+
+        @media (min-width: 768px) {
+            .logo {
+                justify-content: flex-start;
+                margin-bottom: 2rem;
+            }
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: #22c55e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 8px;
+            font-size: 0.9rem;
+        }
+
+        @media (min-width: 768px) {
+            .logo-icon {
+                width: 40px;
+                height: 40px;
+                margin-right: 12px;
+                font-size: 1rem;
+            }
+        }
+
+        .logo-text h1 {
+            font-size: 1.25rem;
+            color: #1f2937;
+            margin-bottom: 2px;
+        }
+
+        @media (min-width: 768px) {
+            .logo-text h1 {
+                font-size: 1.5rem;
+                margin-bottom: 4px;
+            }
+        }
+
+        .logo-text p {
+            color: #6b7280;
+            font-size: 0.8rem;
+        }
+
+        @media (min-width: 768px) {
+            .logo-text p {
+                font-size: 0.9rem;
+            }
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .hero {
+                text-align: left;
+                margin-bottom: 3rem;
+            }
+        }
+
+        .hero h2 {
+            font-size: 1.75rem;
+            color: #1f2937;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .hero h2 {
+                font-size: 3rem;
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        .hero p {
+            color: #6b7280;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .hero p {
+                font-size: 1.1rem;
+                margin-bottom: 3rem;
+            }
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @media (min-width: 480px) {
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .features {
+                gap: 2rem;
+            }
+        }
+
+        .feature-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .feature-card {
+                padding: 1.5rem;
+                border-radius: 12px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+                text-align: left;
+            }
+        }
+
+        .feature-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin: 0 auto 0.75rem auto;
+        }
+
+        @media (min-width: 768px) {
+            .feature-icon {
+                width: 48px;
+                height: 48px;
+                border-radius: 8px;
+                font-size: 1.5rem;
+                margin: 0 0 1rem 0;
+            }
+        }
+
+        .weather-icon { background: #3b82f6; color: white; }
+        .market-icon { background: #22c55e; color: white; }
+        .marketplace-icon { background: #8b5cf6; color: white; }
+        .community-icon { background: #f59e0b; color: white; }
+
+        .feature-card h3 {
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        @media (min-width: 768px) {
+            .feature-card h3 {
+                font-size: 1rem;
+            }
+        }
+
+        .feature-card p {
+            color: #6b7280;
+            font-size: 0.8rem;
+            margin-bottom: 0.75rem;
+        }
+
+        @media (min-width: 768px) {
+            .feature-card p {
+                font-size: 0.9rem;
+                margin-bottom: 1rem;
+            }
+        }
+
+        .learn-more {
+            background: #f3f4f6;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            color: #374151;
+            cursor: pointer;
+            font-size: 0.8rem;
+            width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .learn-more {
+                padding: 0.5rem 1rem;
+                border-radius: 6px;
+                font-size: 0.9rem;
+                width: auto;
+            }
+        }
+
+        .right-section {
+            width: 100%;
+            background: white;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+            order: 1;
+            min-height: 60vh;
+        }
+
+        @media (min-width: 768px) {
+            .right-section {
+                width: 400px;
+                padding: 2rem;
+                box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+                order: 2;
+                min-height: auto;
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .login-header {
+                margin-bottom: 2rem;
+            }
+        }
+
+        .login-header h2 {
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .login-header p {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .login-tabs {
+            display: flex;
+            margin-bottom: 1.25rem;
+            background: #f3f4f6;
+            border-radius: 6px;
+            padding: 3px;
+        }
+
+        @media (min-width: 768px) {
+            .login-tabs {
+                margin-bottom: 1.5rem;
+                border-radius: 8px;
+                padding: 4px;
+            }
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 0.6rem;
+            border: none;
+            background: transparent;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+
+        @media (min-width: 768px) {
+            .tab-button {
+                padding: 0.75rem;
+                border-radius: 6px;
+                font-size: 0.9rem;
+            }
+        }
+
+        .tab-button.active {
+            background: #22c55e;
+            color: white;
+        }
+
+        .tab-button:not(.active) {
+            background: #e5e7eb;
+            color: #6b7280;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #374151;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #22c55e;
+        }
+
+        .login-button {
+            width: 100%;
+            background: #22c55e;
+            color: white;
+            border: none;
+            padding: 0.875rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-bottom: 1rem;
+            transition: background-color 0.2s;
+            font-weight: 500;
+        }
+
+        .login-button:hover {
+            background: #16a34a;
+        }
+
+        .login-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .forgot-password a {
+            color: #ef4444;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .register-link {
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .register-link a {
+            color: #22c55e;
+            text-decoration: none;
+        }
+
+        .demo-credentials {
+            background: #f9fafb;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1.5rem;
+            border-left: 4px solid #22c55e;
+        }
+
+        .demo-credentials h4 {
+            color: #374151;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .demo-credentials p {
+            color: #6b7280;
+            font-size: 0.75rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .error-message {
+            background: #fef2f2;
+            color: #dc2626;
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            border: 1px solid #fecaca;
+        }
+
+        .success-message {
+            background: #f0fdf4;
+            color: #16a34a;
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            border: 1px solid #bbf7d0;
+        }
+
+        /* Touch-friendly improvements */
+        .tab-button, .login-button, .learn-more {
+            min-height: 44px;
+            touch-action: manipulation;
+        }
+
+        /* Prevent zoom on input focus on iOS */
+        @media screen and (-webkit-min-device-pixel-ratio: 0) {
+            .form-group input {
+                font-size: 16px;
+            }
+        }
+
+        /* Hide features on very small screens to save space */
+        @media (max-height: 600px) and (max-width: 480px) {
+            .features {
+                display: none;
+            }
+            .hero {
+                margin-bottom: 1rem;
+            }
+            .hero h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-section">
+            <div class="logo">
+                <div class="logo-icon">✓</div>
+                <div class="logo-text">
+                    <h1>HarvestNet</h1>
+                    <p>Agricultural Platform for Kenyan Farmers</p>
+                </div>
+            </div>
+            
+            <div class="hero">
+                <h2>Your agricultural companion for better farming decisions</h2>
+                <p>Connect with farmers, access real-time weather data, get market prices, and grow your agricultural business with our comprehensive platform.</p>
+            </div>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon weather-icon">☁</div>
+                    <h3>Weather Insights</h3>
+                    <p>Get accurate weather forecasts and farming recommendations</p>
+                    <button class="learn-more">Learn more</button>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon market-icon">📈</div>
+                    <h3>Market Prices</h3>
+                    <p>Real-time commodity prices from local markets</p>
+                    <button class="learn-more">Learn more</button>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon marketplace-icon">🛒</div>
+                    <h3>Marketplace</h3>
+                    <p>Buy and sell directly with other farmers</p>
+                    <button class="learn-more">Learn more</button>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon community-icon">👥</div>
+                    <h3>Community</h3>
+                    <p>Connect with cooperatives and local farmers</p>
+                    <button class="learn-more">Learn more</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="right-section">
+            <div class="login-header">
+                <h2>Login</h2>
+                <p>Welcome back to HarvestNet</p>
+            </div>
+            
+            <div class="login-tabs">
+                <button class="tab-button active" id="email-tab">📧 Email</button>
+                <button class="tab-button" id="phone-tab">📱 Phone Number</button>
+            </div>
+            
+            <form id="login-form">
+                <div id="error-container"></div>
+                <div id="success-container"></div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="your@email.com" required autocomplete="email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password">
+                </div>
+                
+                <button type="submit" class="login-button" id="login-btn">Login</button>
+            </form>
+            
+            <div class="forgot-password">
+                <a href="#" onclick="showMessage('Password reset functionality will be available soon.', 'info')">Forgot Password?</a>
+            </div>
+            
+            <div class="register-link">
+                Don't have an account? <a href="#" onclick="showMessage('Registration functionality will be available soon.', 'info')">Register</a>
+            </div>
+            
+            <div class="demo-credentials">
+                <h4>Demo Credentials:</h4>
+                <p>Admin: admin@harvestnet.com / password123</p>
+                <p>Farmer: farmer@harvestnet.com / password123</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API Configuration
+        const API_BASE_URL = 'http://localhost:5000/api';
+        let authToken = localStorage.getItem('harvestnet_token');
+
+        // Tab switching functionality
+        document.getElementById('email-tab').addEventListener('click', function() {
+            this.classList.add('active');
+            document.getElementById('phone-tab').classList.remove('active');
+        });
+
+        document.getElementById('phone-tab').addEventListener('click', function() {
+            this.classList.add('active');
+            document.getElementById('email-tab').classList.remove('active');
+            showMessage('Phone login will be available soon. Please use email login.', 'info');
+        });
+
+        // Message display functions
+        function showMessage(message, type = 'error') {
+            const errorContainer = document.getElementById('error-container');
+            const successContainer = document.getElementById('success-container');
+            
+            // Clear existing messages
+            errorContainer.innerHTML = '';
+            successContainer.innerHTML = '';
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.textContent = message;
+            
+            if (type === 'error') {
+                messageDiv.className = 'error-message';
+                errorContainer.appendChild(messageDiv);
+            } else if (type === 'success') {
+                messageDiv.className = 'success-message';
+                successContainer.appendChild(messageDiv);
+            } else {
+                messageDiv.className = 'success-message';
+                successContainer.appendChild(messageDiv);
+            }
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 5000);
+        }
+
+        // Login form submission
+        document.getElementById('login-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('login-btn');
+            
+            if (!email || !password) {
+                showMessage('Please enter both email and password.', 'error');
+                return;
+            }
+            
+            // Disable button and show loading
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Logging in...';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Store token and user data
+                    localStorage.setItem('harvestnet_token', data.token);
+                    localStorage.setItem('harvestnet_user', JSON.stringify(data.user));
+                    
+                    showMessage('Login successful! Redirecting to dashboard...', 'success');
+                    
+                    // Redirect to dashboard after 1 second
+                    setTimeout(() => {
+                        window.location.href = 'mobile-dashboard.html';
+                    }, 1000);
+                } else {
+                    showMessage(data.message || 'Login failed. Please try again.', 'error');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showMessage('Connection error. Please check your internet connection and try again.', 'error');
+            } finally {
+                // Re-enable button
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Login';
+            }
+        });
+
+        // Check if user is already logged in
+        if (authToken) {
+            // Verify token validity
+            fetch(`${API_BASE_URL}/health`, {
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                }
+            }).then(response => {
+                if (response.ok) {
+                    window.location.href = 'mobile-dashboard.html';
+                } else {
+                    localStorage.removeItem('harvestnet_token');
+                    localStorage.removeItem('harvestnet_user');
+                }
+            }).catch(error => {
+                console.log('Token verification failed:', error);
+            });
+        }
+
+        // Prevent zoom on iOS when focusing inputs
+        if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+            document.addEventListener('touchstart', function() {}, true);
+        }
+    </script>
+</body>
+</html>
+

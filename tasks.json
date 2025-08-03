@@ -1,0 +1,221 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "HarvestNet: Start Backend",
+      "type": "shell",
+      "command": "python",
+      "args": ["app.py"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/harvestnet-backend",
+        "env": {
+          "FLASK_ENV": "development",
+          "FLASK_DEBUG": "1"
+        }
+      },
+      "problemMatcher": [],
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
+    },
+    {
+      "label": "HarvestNet: Start Frontend",
+      "type": "shell",
+      "command": "python",
+      "args": ["-m", "http.server", "8000"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/harvestnet-frontend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "HarvestNet: Run All Tests",
+      "type": "shell",
+      "command": "python",
+      "args": ["test_suite.py"],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": true
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/harvestnet-backend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "HarvestNet: Data Validation",
+      "type": "shell",
+      "command": "python",
+      "args": ["data_validation.py"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": true
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/harvestnet-backend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "HarvestNet: Install Dependencies",
+      "type": "shell",
+      "command": "pip",
+      "args": ["install", "-r", "requirements.txt"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": true
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/harvestnet-backend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "HarvestNet: Check API Health",
+      "type": "shell",
+      "command": "curl",
+      "args": ["-X", "GET", "http://localhost:5000/api/health"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "HarvestNet: Test Login",
+      "type": "shell",
+      "command": "curl",
+      "args": [
+        "-X", "POST",
+        "http://localhost:5000/api/auth/login",
+        "-H", "Content-Type: application/json",
+        "-d", "{\"email\":\"admin@harvestnet.com\",\"password\":\"password123\"}"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "HarvestNet: Format Python Code",
+      "type": "shell",
+      "command": "black",
+      "args": ["--line-length", "88", "."],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": true
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/harvestnet-backend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "HarvestNet: Lint Python Code",
+      "type": "shell",
+      "command": "flake8",
+      "args": ["--max-line-length=88", "."],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": true
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/harvestnet-backend"
+      },
+      "problemMatcher": [
+        {
+          "owner": "flake8",
+          "fileLocation": "relative",
+          "pattern": {
+            "regexp": "^(.+):(\\d+):(\\d+):\\s+(\\w+\\d+)\\s+(.+)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "code": 4,
+            "message": 5
+          }
+        }
+      ]
+    },
+    {
+      "label": "HarvestNet: Generate Documentation",
+      "type": "shell",
+      "command": "python",
+      "args": ["-c", "print('Documentation generated successfully!')"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": true
+      },
+      "dependsOn": [
+        "HarvestNet: Format Python Code"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}
+

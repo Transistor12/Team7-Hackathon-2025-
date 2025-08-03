@@ -1,0 +1,231 @@
+{
+  "python.defaultInterpreterPath": "/usr/bin/python3",
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": true,
+  "python.linting.flake8Enabled": true,
+  "python.formatting.provider": "black",
+  "python.formatting.blackArgs": ["--line-length", "88"],
+  "python.testing.unittestEnabled": true,
+  "python.testing.unittestArgs": [
+    "-v",
+    "-s",
+    "./harvestnet-backend",
+    "-p",
+    "test_*.py"
+  ],
+  "files.associations": {
+    "*.html": "html",
+    "*.css": "css",
+    "*.js": "javascript",
+    "*.py": "python",
+    "*.md": "markdown",
+    "*.json": "json"
+  },
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact",
+    "html": "html"
+  },
+  "html.format.indentInnerHtml": true,
+  "html.format.wrapLineLength": 120,
+  "css.validate": true,
+  "css.lint.unknownAtRules": "ignore",
+  "javascript.validate.enable": true,
+  "javascript.format.enable": true,
+  "javascript.preferences.quoteStyle": "single",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true,
+    "source.fixAll": true
+  },
+  "editor.rulers": [80, 120],
+  "editor.wordWrap": "on",
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/node_modules": true,
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/*.db": true,
+    "**/.pytest_cache": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/*.code-search": true,
+    "**/__pycache__": true,
+    "**/*.pyc": true
+  },
+  "git.ignoreLimitWarning": true,
+  "git.autofetch": true,
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "terminal.integrated.cwd": "${workspaceFolder}",
+  "workbench.colorTheme": "Default Dark+",
+  "workbench.iconTheme": "vs-seti",
+  "extensions.recommendations": [
+    "ms-python.python",
+    "ms-python.flake8",
+    "ms-python.black-formatter",
+    "bradlc.vscode-tailwindcss",
+    "esbenp.prettier-vscode",
+    "ms-vscode.vscode-json",
+    "yzhang.markdown-all-in-one",
+    "ms-vscode.live-server",
+    "formulahendry.auto-rename-tag",
+    "christian-kohler.path-intellisense",
+    "ms-vscode.vscode-typescript-next",
+    "ms-python.pylint"
+  ],
+  "python.analysis.extraPaths": [
+    "./harvestnet-backend"
+  ],
+  "python.envFile": "${workspaceFolder}/harvestnet-backend/.env",
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Python: Flask App",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/harvestnet-backend/app.py",
+        "console": "integratedTerminal",
+        "env": {
+          "FLASK_ENV": "development",
+          "FLASK_DEBUG": "1"
+        },
+        "cwd": "${workspaceFolder}/harvestnet-backend"
+      },
+      {
+        "name": "Python: Test Suite",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/harvestnet-backend/test_suite.py",
+        "console": "integratedTerminal",
+        "cwd": "${workspaceFolder}/harvestnet-backend"
+      },
+      {
+        "name": "Python: Data Validation",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/harvestnet-backend/data_validation.py",
+        "console": "integratedTerminal",
+        "cwd": "${workspaceFolder}/harvestnet-backend"
+      }
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Start Backend Server",
+        "type": "shell",
+        "command": "python",
+        "args": ["app.py"],
+        "group": "build",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "new"
+        },
+        "options": {
+          "cwd": "${workspaceFolder}/harvestnet-backend"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Start Frontend Server",
+        "type": "shell",
+        "command": "python",
+        "args": ["-m", "http.server", "8000"],
+        "group": "build",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "new"
+        },
+        "options": {
+          "cwd": "${workspaceFolder}/harvestnet-frontend"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Run Tests",
+        "type": "shell",
+        "command": "python",
+        "args": ["test_suite.py"],
+        "group": "test",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "new"
+        },
+        "options": {
+          "cwd": "${workspaceFolder}/harvestnet-backend"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Run Data Validation",
+        "type": "shell",
+        "command": "python",
+        "args": ["data_validation.py"],
+        "group": "build",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "new"
+        },
+        "options": {
+          "cwd": "${workspaceFolder}/harvestnet-backend"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Install Backend Dependencies",
+        "type": "shell",
+        "command": "pip",
+        "args": ["install", "-r", "requirements.txt"],
+        "group": "build",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "new"
+        },
+        "options": {
+          "cwd": "${workspaceFolder}/harvestnet-backend"
+        },
+        "problemMatcher": []
+      }
+    ]
+  },
+  "python.testing.pytestEnabled": false,
+  "python.testing.nosetestsEnabled": false,
+  "html.suggest.html5": true,
+  "css.completion.completePropertyWithSemicolon": true,
+  "css.completion.triggerPropertyValueCompletion": true,
+  "javascript.suggest.autoImports": true,
+  "typescript.suggest.autoImports": true,
+  "editor.minimap.enabled": true,
+  "editor.minimap.maxColumn": 120,
+  "breadcrumbs.enabled": true,
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "workbench.startupEditor": "readme",
+  "markdown.preview.fontSize": 14,
+  "markdown.preview.lineHeight": 1.6,
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "diffEditor.ignoreTrimWhitespace": false,
+  "editor.suggestSelection": "first",
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue"
+}
+

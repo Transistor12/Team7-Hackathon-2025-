@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>HarvestNet - Admin Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            color: #1f2937;
+            overflow-x: hidden;
+        }
+
+        /* Mobile-first header */
+        .header {
+            background: white;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: #22c55e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 8px;
+            font-size: 0.9rem;
+        }
+
+        .logo-text h1 {
+            font-size: 1.1rem;
+            color: #1f2937;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-btn {
+            padding: 0.5rem;
+            border: none;
+            border-radius: 6px;
+            background: #f3f4f6;
+            color: #374151;
+            cursor: pointer;
+            font-size: 0.9rem;
+            min-height: 40px;
+            min-width: 40px;
+        }
+
+        .logout-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        /* Mobile navigation */
+        .mobile-nav {
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5rem 0;
+        }
+
+        @media (min-width: 768px) {
+            .mobile-nav {
+                display: none;
+            }
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0.5rem;
+            border: none;
+            background: none;
+            color: #6b7280;
+            cursor: pointer;
+            font-size: 0.7rem;
+            min-width: 60px;
+            transition: color 0.2s;
+        }
+
+        .nav-item.active {
+            color: #22c55e;
+        }
+
+        .nav-item-icon {
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Desktop sidebar */
+        .sidebar {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: white;
+            border-right: 1px solid #e5e7eb;
+            z-index: 50;
+            flex-direction: column;
+        }
+
+        @media (min-width: 768px) {
+            .sidebar {
+                display: flex;
+            }
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 1rem 0;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: #6b7280;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .sidebar-item:hover,
+        .sidebar-item.active {
+            background: #f0fdf4;
+            color: #22c55e;
+        }
+
+        .sidebar-item-icon {
+            margin-right: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .sidebar-footer {
+            padding: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            background: #f9fafb;
+            border-radius: 8px;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: #22c55e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 0.75rem;
+        }
+
+        .user-info h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .user-info p {
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+
+        /* Main content */
+        .main-content {
+            padding: 1rem;
+            padding-bottom: 80px; /* Space for mobile nav */
+            min-height: 100vh;
+        }
+
+        @media (min-width: 768px) {
+            .main-content {
+                margin-left: 250px;
+                padding: 2rem;
+                padding-bottom: 2rem;
+            }
+        }
+
+        .page-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        /* Dashboard cards */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (min-width: 640px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .dashboard-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .card-icon.user { background: #f59e0b; }
+        .card-icon.analytics { background: #3b82f6; }
+        .card-icon.data { background: #ef4444; }
+        .card-icon.settings { background: #8b5cf6; }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-description {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-button {
+            background: #f3f4f6;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            color: #374151;
+            cursor: pointer;
+            font-size: 0.9rem;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+
+        .card-button:hover {
+            background: #e5e7eb;
+        }
+
+        /* Stats section */
+        .stats-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            margin-bottom: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-number.users { color: #22c55e; }
+        .stat-number.farmers { color: #3b82f6; }
+        .stat-number.ambassadors { color: #8b5cf6; }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-growth {
+            color: #22c55e;
+            font-size: 0.8rem;
+        }
+
+        /* Content sections */
+        .content-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* User table */
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .user-table th,
+        .user-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .user-table th {
+            background: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        /* Responsive table */
+        @media (max-width: 640px) {
+            .user-table {
+                font-size: 0.8rem;
+            }
+            
+            .user-table th:nth-child(n+4),
+            .user-table td:nth-child(n+4) {
+                display: none;
+            }
+        }
+
+        /* Loading states */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #6b7280;
+        }
+
+        .error {
+            background: #fef2f2;
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+            border: 1px solid #fecaca;
+        }
+
+        /* Touch improvements */
+        .card-button, .nav-item, .sidebar-item, .header-btn {
+            min-height: 44px;
+            touch-action: manipulation;
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Header -->
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon">✓</div>
+            <div class="logo-text">
+                <h1>HarvestNet</h1>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="header-btn" id="lang-btn">🌐 EN</button>
+            <button class="header-btn logout-btn" id="logout-btn">🚪</button>
+        </div>
+    </div>
+
+    <!-- Desktop Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <div class="logo-icon">✓</div>
+                <div class="logo-text">
+                    <h1>HarvestNet</h1>
+                    <p>Agricultural Platform for Kenyan Farmers</p>
+                </div>
+            </div>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <button class="sidebar-item active" data-section="dashboard">
+                <span class="sidebar-item-icon">🏠</span>
+                Dashboard
+            </button>
+            <button class="sidebar-item" data-section="users">
+                <span class="sidebar-item-icon">👥</span>
+                User Management
+            </button>
+            <button class="sidebar-item" data-section="analytics">
+                <span class="sidebar-item-icon">📊</span>
+                Analytics
+            </button>
+            <button class="sidebar-item" data-section="data">
+                <span class="sidebar-item-icon">🗄️</span>
+                Data Management
+            </button>
+            <button class="sidebar-item" data-section="settings">
+                <span class="sidebar-item-icon">⚙️</span>
+                Settings
+            </button>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="user-avatar">A</div>
+                <div class="user-info">
+                    <h4 id="user-name">Admin User</h4>
+                    <p id="user-role">administrator</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Dashboard Section -->
+        <div class="content-section active" id="dashboard-section">
+            <div class="page-header">
+                <h1 class="page-title">Admin Dashboard</h1>
+                <p class="page-subtitle">Manage and oversee the HarvestNet platform</p>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon user">👥</div>
+                    </div>
+                    <h3 class="card-title">User Management</h3>
+                    <p class="card-description">Manage farmers, buyers, and data ambassadors</p>
+                    <button class="card-button" onclick="showSection('users')">Learn more</button>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon analytics">📊</div>
+                    </div>
+                    <h3 class="card-title">System Analytics</h3>
+                    <p class="card-description">View platform usage and performance metrics</p>
+                    <button class="card-button" onclick="showSection('analytics')">Learn more</button>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon data">🗄️</div>
+                    </div>
+                    <h3 class="card-title">Data Management</h3>
+                    <p class="card-description">Oversee agricultural data and market information</p>
+                    <button class="card-button" onclick="showSection('data')">Learn more</button>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon settings">⚙️</div>
+                    </div>
+                    <h3 class="card-title">Platform Settings</h3>
+                    <p class="card-description">Configure system settings and preferences</p>
+                    <button class="card-button" onclick="showSection('settings')">Learn more</button>
+                </div>
+            </div>
+
+            <div class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number users" id="total-users">2</div>
+                        <div class="stat-label">Total Users</div>
+                        <div class="stat-growth">+12% from last month</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number farmers" id="active-farmers">1</div>
+                        <div class="stat-label">Active Farmers</div>
+                        <div class="stat-growth">+8% from last month</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number ambassadors" id="data-ambassadors">0</div>
+                        <div class="stat-label">Data Ambassadors</div>
+                        <div class="stat-growth">+15% from last month</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Management Section -->
+        <div class="content-section" id="users-section">
+            <div class="page-header">
+                <h1 class="page-title">User Management</h1>
+                <p class="page-subtitle">Manage farmers, buyers, and data ambassadors</p>
+            </div>
+
+            <div id="users-loading" class="loading">Loading user data...</div>
+            <div id="users-error" class="error" style="display: none;"></div>
+            
+            <div id="users-content" style="display: none;">
+                <h2 class="section-title">User Management</h2>
+                <table class="user-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                            <th>Last Login</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-table-body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Analytics Section -->
+        <div class="content-section" id="analytics-section">
+            <div class="page-header">
+                <h1 class="page-title">Analytics</h1>
+                <p class="page-subtitle">View platform usage and performance metrics</p>
+            </div>
+
+            <div class="stats-section">
+                <h2 class="section-title">Analytics Dashboard</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number users" id="analytics-users">2</div>
+                        <div class="stat-label">Total Platform Users</div>
+                        <div class="stat-growth">Real-time data</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number farmers" id="analytics-farmers">1</div>
+                        <div class="stat-label">Active Farmers</div>
+                        <div class="stat-growth">Monthly active users</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number ambassadors" id="analytics-ambassadors">0</div>
+                        <div class="stat-label">Data Ambassadors</div>
+                        <div class="stat-growth">Contributing members</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Management Section -->
+        <div class="content-section" id="data-section">
+            <div class="page-header">
+                <h1 class="page-title">Data Management</h1>
+                <p class="page-subtitle">Oversee agricultural data and market information</p>
+            </div>
+
+            <div class="stats-section">
+                <h2 class="section-title">Data Management</h2>
+                <p>Comprehensive data management tools for agricultural information, weather data, and market prices.</p>
+                
+                <div style="margin-top: 1.5rem;">
+                    <button class="card-button" onclick="testWeatherAPI()">Test Weather API</button>
+                    <button class="card-button" onclick="exportData()" style="margin-top: 0.5rem;">Export Data</button>
+                </div>
+                
+                <div id="weather-data" style="margin-top: 1rem; display: none;">
+                    <h3>Weather Data (Nairobi)</h3>
+                    <pre id="weather-content" style="background: #f9fafb; padding: 1rem; border-radius: 6px; overflow-x: auto; font-size: 0.8rem;"></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Section -->
+        <div class="content-section" id="settings-section">
+            <div class="page-header">
+                <h1 class="page-title">Platform Settings</h1>
+                <p class="page-subtitle">Configure system settings and preferences</p>
+            </div>
+
+            <div class="stats-section">
+                <h2 class="section-title">Platform Settings</h2>
+                <p>Configure system settings, API integrations, and platform preferences.</p>
+                
+                <h3 style="margin-top: 1.5rem; margin-bottom: 1rem;">API Health Status</h3>
+                <div id="api-health" class="loading">Checking API health...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav">
+        <button class="nav-item active" data-section="dashboard">
+            <div class="nav-item-icon">🏠</div>
+            <span>Dashboard</span>
+        </button>
+        <button class="nav-item" data-section="users">
+            <div class="nav-item-icon">👥</div>
+            <span>Users</span>
+        </button>
+        <button class="nav-item" data-section="analytics">
+            <div class="nav-item-icon">📊</div>
+            <span>Analytics</span>
+        </button>
+        <button class="nav-item" data-section="data">
+            <div class="nav-item-icon">🗄️</div>
+            <span>Data</span>
+        </button>
+        <button class="nav-item" data-section="settings">
+            <div class="nav-item-icon">⚙️</div>
+            <span>Settings</span>
+        </button>
+    </div>
+
+    <script>
+        // API Configuration
+        const API_BASE_URL = 'http://localhost:5000/api';
+        let authToken = localStorage.getItem('harvestnet_token');
+        let userData = JSON.parse(localStorage.getItem('harvestnet_user') || '{}');
+
+        // Check authentication
+        if (!authToken) {
+            window.location.href = 'mobile-optimized.html';
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserProfile();
+            loadDashboardData();
+            loadAPIHealth();
+        });
+
+        // Navigation functionality
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionName + '-section').classList.add('active');
+            
+            // Update navigation states
+            document.querySelectorAll('.nav-item, .sidebar-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            document.querySelectorAll(`[data-section="${sectionName}"]`).forEach(item => {
+                item.classList.add('active');
+            });
+            
+            // Load section-specific data
+            if (sectionName === 'users') {
+                loadUsers();
+            } else if (sectionName === 'analytics') {
+                loadAnalytics();
+            }
+            
+            // Scroll to top on mobile
+            if (window.innerWidth < 768) {
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // Add event listeners for navigation
+        document.querySelectorAll('[data-section]').forEach(item => {
+            item.addEventListener('click', function() {
+                showSection(this.dataset.section);
+            });
+        });
+
+        // Load user profile
+        function loadUserProfile() {
+            if (userData.name) {
+                document.getElementById('user-name').textContent = userData.name;
+                document.getElementById('user-role').textContent = userData.role;
+            }
+        }
+
+        // Load dashboard data
+        async function loadDashboardData() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/analytics/dashboard`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('total-users').textContent = data.total_users;
+                    document.getElementById('active-farmers').textContent = data.active_farmers;
+                    document.getElementById('data-ambassadors').textContent = data.data_ambassadors;
+                }
+            } catch (error) {
+                console.error('Failed to load dashboard data:', error);
+            }
+        }
+
+        // Load users
+        async function loadUsers() {
+            const loadingEl = document.getElementById('users-loading');
+            const errorEl = document.getElementById('users-error');
+            const contentEl = document.getElementById('users-content');
+            
+            loadingEl.style.display = 'block';
+            errorEl.style.display = 'none';
+            contentEl.style.display = 'none';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/users`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const tbody = document.getElementById('users-table-body');
+                    
+                    tbody.innerHTML = data.users.map(user => `
+                        <tr>
+                            <td>${user.name}</td>
+                            <td>${user.email}</td>
+                            <td>${user.role}</td>
+                            <td>${user.location || 'Not specified'}</td>
+                            <td><span class="status-badge status-active">Active</span></td>
+                            <td>${user.last_login ? new Date(user.last_login).toLocaleDateString() : 'Never'}</td>
+                        </tr>
+                    `).join('');
+                    
+                    loadingEl.style.display = 'none';
+                    contentEl.style.display = 'block';
+                } else {
+                    throw new Error('Failed to load users');
+                }
+            } catch (error) {
+                loadingEl.style.display = 'none';
+                errorEl.style.display = 'block';
+                errorEl.textContent = 'Failed to load user data. Please try again.';
+            }
+        }
+
+        // Load analytics
+        async function loadAnalytics() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/analytics/dashboard`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('analytics-users').textContent = data.total_users;
+                    document.getElementById('analytics-farmers').textContent = data.active_farmers;
+                    document.getElementById('analytics-ambassadors').textContent = data.data_ambassadors;
+                }
+            } catch (error) {
+                console.error('Failed to load analytics:', error);
+            }
+        }
+
+        // Test weather API
+        async function testWeatherAPI() {
+            const weatherDiv = document.getElementById('weather-data');
+            const weatherContent = document.getElementById('weather-content');
+            
+            weatherContent.textContent = 'Loading weather data...';
+            weatherDiv.style.display = 'block';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/weather?lat=-1.2921&lon=36.8219`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    weatherContent.textContent = JSON.stringify(data, null, 2);
+                } else {
+                    weatherContent.textContent = 'Failed to load weather data';
+                }
+            } catch (error) {
+                weatherContent.textContent = 'Error: ' + error.message;
+            }
+        }
+
+        // Export data
+        function exportData() {
+            const data = {
+                timestamp: new Date().toISOString(),
+                users: 'User data would be exported here',
+                analytics: 'Analytics data would be exported here',
+                weather: 'Weather data would be exported here'
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'harvestnet-data-export.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Load API health
+        async function loadAPIHealth() {
+            const healthDiv = document.getElementById('api-health');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/health`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    healthDiv.innerHTML = `
+                        <div style="color: #22c55e;">✅ API Status: ${data.status}</div>
+                        <div style="color: #22c55e;">✅ Database: ${data.database}</div>
+                        <div style="color: #6b7280; font-size: 0.9rem; margin-top: 0.5rem;">Last checked: ${new Date(data.timestamp).toLocaleString()}</div>
+                    `;
+                } else {
+                    healthDiv.innerHTML = '<div style="color: #ef4444;">❌ API Health Check Failed</div>';
+                }
+            } catch (error) {
+                healthDiv.innerHTML = '<div style="color: #ef4444;">❌ Connection Error</div>';
+            }
+        }
+
+        // Logout functionality
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            localStorage.removeItem('harvestnet_token');
+            localStorage.removeItem('harvestnet_user');
+            window.location.href = 'mobile-optimized.html';
+        });
+
+        // Language selector (placeholder)
+        document.getElementById('lang-btn').addEventListener('click', function() {
+            alert('Language selection will be available soon.');
+        });
+    </script>
+</body>
+</html>
+
